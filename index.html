@@ -1,1 +1,500 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Boutique en Ligne</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e67e22;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Filtres par catégorie */
+        #categories-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0 30px;
+        }
+
+        .filter-btn {
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        /* Grille des produits */
+        .grille {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .produit-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .produit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        .produit-img {
+            height: 180px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 0.9rem;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .produit-info {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .produit-cat {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .produit-nom {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 0 0 10px;
+            color: var(--primary-color);
+        }
+
+        .produit-desc {
+            font-size: 0.9rem;
+            color: #666;
+            flex-grow: 1;
+            margin-bottom: 15px;
+        }
+
+        .produit-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            margin-top: auto;
+        }
+
+        .produit-prix {
+            font-weight: bold;
+            color: #27ae60;
+            font-size: 1.1rem;
+        }
+
+        .btn-acheter {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-acheter:hover {
+            opacity: 0.9;
+        }
+
+        /* Panneau Admin Styling */
+        #admin-wrapper {
+            text-align: center;
+            margin: 40px 0 20px;
+        }
+
+        #admin-panel {
+            display: none;
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Ma Super Boutique</h1>
+        <p>Découvrez notre sélection de produits exclusifs</p>
+    </header>
+
+    <div class="container">
+        <!-- Boutons de filtres par catégorie générés dynamiquement -->
+        <div id="categories-filter"></div>
+
+        <!-- Grille d'affichage des produits -->
+        <div class="grille" id="catalogue-grille">
+            <!-- Les produits seront injectés ici via JavaScript -->
+        </div>
+
+        <!-- Bouton d'accès propriétaire / admin -->
+        <div id="admin-wrapper">
+            <button onclick="toggleAdminPanel()" style="background: #333; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                🔐 Accès Propriétaire / Admin
+            </button>
+        </div>
+
+        <!-- Interface d'administration -->
+        <div id="admin-panel">
+            <h3 style="margin-top: 0; color: #333; border-bottom: 2px solid #eee; padding-bottom: 10px;">⚙️ Gestion de la Boutique</h3>
+            
+            <form id="admin-form" style="margin-top: 20px;">
+                <input type="hidden" id="edit-index" value="">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label style="display:block; font-weight:600; margin-bottom:5px;">Nom du produit :</label>
+                        <input type="text" id="input-nom" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" required>
+                    </div>
+                    <div>
+                        <label style="display:block; font-weight:600; margin-bottom:5px;">Catégorie :</label>
+                        <input type="text" id="input-cat" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" required>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label style="display:block; font-weight:600; margin-bottom:5px;">Prix (FCFA) :</label>
+                        <input type="number" id="input-prix" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;" required>
+                    </div>
+                    <div>
+                        <label style="display:block; font-weight:600; margin-bottom:5px;">Image (Nom du fichier ou URL) :</label>
+                        <input type="text" id="input-image" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display:block; font-weight:600; margin-bottom:5px;">Description :</label>
+                    <textarea id="input-desc" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button type="submit" style="background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">Enregistrer le produit</button>
+                    <button type="button" onclick="resetForm()" style="background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Annuler</button>
+                    <button type="button" onclick="exportData()" style="background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-left: auto;">📥 Générer le code à sauvegarder</button>
+                </div>
+            </form>
+
+            <h4 style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px;">Liste rapide des produits</h4>
+            <div id="admin-product-list" style="max-height: 250px; overflow-y: auto; border: 1px solid #eee; padding: 10px; border-radius: 5px;">
+                <!-- Généré dynamiquement -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Liste brute des produits (incluant vos produits initiaux et les 60 emplacements vides prêts à l'emploi)
+        let PRODUITS_BRUT = [
+            { nom: "Parfum Élégance", cat: "Parfums", desc: "Une fragrance unique aux notes boisées et florales.", prix: 15000, image: "" },
+            { nom: "Crème Hydratante Bio", cat: "Soins", desc: "Soin quotidien pour une peau douce et nourrie.", prix: 8500, image: "" },
+            // ===== 60 EMPLACEMENTS LIBRES PRÊTS À ÊTRE REMPLIS =====
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""},
+            {nom:"", cat:"", desc:"", prix:null, image:""}
+        ];
+
+        // Charger les données enregistrées par l'administrateur si elles existent dans le navigateur
+        const savedData = localStorage.getItem('ma_boutique_produits');
+        if (savedData) {
+            PRODUITS_BRUT = JSON.parse(savedData);
+        }
+
+        // Filtrer uniquement les produits valides (qui ont un nom non vide)
+        function getProduitsActifs() {
+            return PRODUITS_BRUT.filter(p => p.nom && p.nom.trim() !== "");
+        }
+
+        // Affichage de la grille des produits
+        function afficherCatalogue(filtreCat = "Tous") {
+            const grille = document.getElementById('catalogue-grille');
+            grille.innerHTML = "";
+
+            const produits = getProduitsActifs();
+            const produitsFiltres = filtreCat === "Tous" 
+                ? produits 
+                : produits.filter(p => p.cat.toLowerCase() === filtreCat.toLowerCase());
+
+            if (produitsFiltres.length === 0) {
+                grille.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #888;">Aucun produit disponible dans cette catégorie.</p>`;
+                return;
+            }
+
+            produitsFiltres.forEach(p => {
+                const imgContent = p.image ? `<img src="${p.image}" class="produit-img" alt="${p.nom}">` : `<div class="produit-img"><span>Image indisponible</span></div>`;
+                
+                grille.innerHTML += `
+                    <div class="produit-card">
+                        ${imgContent}
+                        <div class="produit-info">
+                            <span class="produit-cat">${p.cat || 'Autres'}</span>
+                            <h3 class="produit-nom">${p.nom}</h3>
+                            <p class="produit-desc">${p.desc || 'Aucune description fournie.'}</p>
+                            <div class="produit-footer">
+                                <span class="produit-prix">${p.prix} FCFA</span>
+                                <button class="btn-acheter" onclick="alert('Commande de : ${p.nom}')">Acheter</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Génération automatique des boutons de filtres par catégorie
+        function afficherFiltres() {
+            const container = document.getElementById('categories-filter');
+            const produits = getProduitsActifs();
+            const categories = ["Tous", ...new Set(produits.map(p => p.cat || "Autres"))];
+
+            container.innerHTML = "";
+            categories.forEach(cat => {
+                const activeClass = cat === "Tous" ? "active" : "";
+                container.innerHTML += `<button class="filter-btn ${activeClass}" onclick="filtrerParCat('${cat}', this)">${cat}</button>`;
+            });
+        }
+
+        function filtrerParCat(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            afficherCatalogue(cat);
+        }
+
+        // --- GESTION DU PANNEAU ADMINISTRATEUR ---
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-panel');
+            if (panel.style.display === 'none' || panel.style.display === '') {
+                const pin = prompt("Entrez le code administrateur (Code par défaut : 1234) :");
+                if (pin === "1234") { 
+                    panel.style.display = 'block';
+                    renderAdminList();
+                } else if (pin !== null) {
+                    alert("Code incorrect !");
+                }
+            } else {
+                panel.style.display = 'none';
+            }
+        }
+
+        document.getElementById('admin-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const index = document.getElementById('edit-index').value;
+            const nouveauProduit = {
+                nom: document.getElementById('input-nom').value,
+                cat: document.getElementById('input-cat').value,
+                prix: parseFloat(document.getElementById('input-prix').value),
+                image: document.getElementById('input-image').value,
+                desc: document.getElementById('input-desc').value
+            };
+
+            if (index === "") {
+                // Chercher un emplacement vide existant
+                const videIndex = PRODUITS_BRUT.findIndex(p => !p.nom || p.nom.trim() === "");
+                if (videIndex !== -1) {
+                    PRODUITS_BRUT[videIndex] = nouveauProduit;
+                } else {
+                    PRODUITS_BRUT.push(nouveauProduit);
+                }
+            } else {
+                // Modifier un produit existant
+                PRODUITS_BRUT[index] = nouveauProduit;
+            }
+
+            localStorage.setItem('ma_boutique_produits', JSON.stringify(PRODUITS_BRUT));
+
+            resetForm();
+            renderAdminList();
+            afficherCatalogue();
+            afficherFiltres();
+            alert("Produit enregistré avec succès !");
+        });
+
+        function renderAdminList() {
+            const container = document.getElementById('admin-product-list');
+            container.innerHTML = "";
+            
+            PRODUITS_BRUT.forEach((p, idx) => {
+                if (p.nom && p.nom.trim() !== "") {
+                    container.innerHTML += `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #f1f1f1;">
+                            <span><b>${p.nom}</b> (${p.prix} FCFA)</span>
+                            <div>
+                                <button onclick="editProduct(${idx})" style="background: #ffc107; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; margin-right: 5px;">Modifier</button>
+                                <button onclick="deleteProduct(${idx})" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Supprimer</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function editProduct(idx) {
+            const p = PRODUITS_BRUT[idx];
+            document.getElementById('edit-index').value = idx;
+            document.getElementById('input-nom').value = p.nom;
+            document.getElementById('input-cat').value = p.cat;
+            document.getElementById('input-prix').value = p.prix;
+            document.getElementById('input-image').value = p.image;
+            document.getElementById('input-desc').value = p.desc;
+        }
+
+        function deleteProduct(idx) {
+            if (confirm("Voulez-vous vraiment supprimer ce produit ?")) {
+                PRODUITS_BRUT[idx] = { nom: "", cat: "", desc: "", prix: null, image: "" };
+                localStorage.setItem('ma_boutique_produits', JSON.stringify(PRODUITS_BRUT));
+                renderAdminList();
+                afficherCatalogue();
+                afficherFiltres();
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('edit-index').value = "";
+            document.getElementById('admin-form').reset();
+        }
+
+        function exportData() {
+            const codeText = JSON.stringify(PRODUITS_BRUT, null, 4);
+            const blob = new Blob([codeText], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'produits_mis_a_jour.json';
+            a.click();
+            alert("Le fichier JSON contenant vos produits a été téléchargé !");
+        }
+
+        // Initialisation au chargement de la page
+        window.onload = function() {
+            afficherFiltres();
+            afficherCatalogue();
+        };
+    </script>
+</body>
+</html>
