@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Espace propriétaire – Niger Beauté</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--or:#ee7b1d;--vert:#14502b;--encre:#0d2a19;--sable:#fbe9c8;--menthe:#c3e6cd;--rouge:#b3261e;--b:3px solid var(--encre)}
+*{box-sizing:border-box;margin:0}
+[hidden]{display:none!important}
+body{font-family:'Figtree',system-ui,sans-serif;background:var(--sable);color:var(--encre);line-height:1.5;min-height:100vh}
+h1,h2,h3{font-family:'Unbounded','Arial Black',sans-serif;line-height:1.1}
+:focus-visible{outline:4px solid var(--vert);outline-offset:3px}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px}
+header{background:var(--or);border-bottom:var(--b)}
+header .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;flex-wrap:wrap}
+header h1{font-size:1.1rem}
+.btn{display:inline-block;background:var(--vert);color:#fff;text-decoration:none;font:700 1rem 'Figtree',sans-serif;padding:11px 20px;border:var(--b);border-radius:12px;box-shadow:4px 4px 0 var(--encre);cursor:pointer;transition:transform .12s,box-shadow .12s}
+.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--encre)}
+.btn:disabled{opacity:.55;cursor:wait;transform:none;box-shadow:4px 4px 0 var(--encre)}
+.btn.blanc{background:#fff;color:var(--encre)}
+.btn.or{background:var(--or);color:var(--encre)}
+.btn.rouge{background:var(--rouge);color:#fff}
+.btn.petit{padding:7px 12px;font-size:.88rem;box-shadow:3px 3px 0 var(--encre);border-radius:10px}
+main{padding:28px 0 60px}
+.carte{background:#fff;border:var(--b);border-radius:18px;box-shadow:6px 6px 0 var(--encre);padding:20px;margin-bottom:28px}
+.carte h2{font-size:1.3rem;margin-bottom:14px}
+label{display:block;font-weight:700;margin:12px 0 4px}
+input[type=text],input[type=email],input[type=password],textarea{width:100%;padding:11px 14px;border:var(--b);border-radius:12px;font:600 1rem 'Figtree',sans-serif;background:var(--sable);color:var(--encre)}
+textarea{min-height:84px;resize:vertical}
+.aide{font-size:.88rem;font-weight:400;opacity:.8}
+.ligne{display:flex;gap:12px;flex-wrap:wrap}
+.ligne>div{flex:1 1 220px}
+.check{display:flex;align-items:center;gap:10px;font-weight:700;margin-top:16px}
+.check input{width:22px;height:22px;accent-color:var(--vert)}
+.photo-zone{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.apercu{width:110px;height:110px;border:var(--b);border-radius:14px;background:var(--sable);display:grid;place-items:center;overflow:hidden;font-size:.8rem;text-align:center;padding:6px}
+.apercu img{width:100%;height:100%;object-fit:cover}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.msg{margin-top:14px;padding:10px 14px;border:var(--b);border-radius:12px;font-weight:700;background:var(--menthe)}
+.msg.err{background:#ffd9d6;border-color:var(--rouge);color:#6b130e}
+.liste-tete{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.liste-tete h2{margin:0}
+.compte{font-weight:700}
+.rang{display:flex;gap:14px;align-items:center;border:var(--b);border-radius:14px;padding:10px;margin-bottom:12px;background:#fff;flex-wrap:wrap}
+.rang:nth-child(3n+2){background:var(--menthe)}
+.rang:nth-child(3n){background:#ffd9a8}
+.rang.masque{opacity:.65}
+.mini{width:68px;height:68px;border:var(--b);border-radius:12px;background:var(--sable);overflow:hidden;display:grid;place-items:center;flex:none;font-size:.7rem}
+.mini img{width:100%;height:100%;object-fit:cover}
+.info{flex:1 1 180px;min-width:0}
+.info b{display:block;overflow-wrap:anywhere}
+.info span{font-size:.9rem}
+.badge{display:inline-block;background:var(--or);border:2px solid var(--encre);border-radius:999px;padding:0 8px;font-size:.78rem;font-weight:700;margin-left:6px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.vide{padding:14px 0;font-weight:600}
+.setup{background:#fff;border:var(--b);border-radius:18px;box-shadow:6px 6px 0 var(--encre);padding:22px}
+.setup code{background:var(--sable);padding:1px 6px;border-radius:6px}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <h1>Niger Beauté · Espace propriétaire</h1>
+  <div class="btns">
+   <a class="btn blanc petit" href="index.html" target="_blank" rel="noopener">Voir le site</a>
+   <button class="btn or petit" id="deco" type="button" hidden>Se déconnecter</button>
+  </div>
+ </div>
+</header>
+
+<main class="wrap">
+
+ <!-- Firebase non configuré -->
+ <div class="setup" id="setup" hidden>
+  <h2>Configuration à terminer</h2>
+  <p style="margin-top:10px">Le fichier <code>config.js</code> est encore vide. Remplissez-le avec les réglages Firebase du projet, puis rechargez cette page.</p>
+ </div>
+
+ <!-- Connexion -->
+ <section class="carte" id="login" hidden>
+  <h2>Connexion</h2>
+  <form id="fLogin" autocomplete="on">
+   <label for="email">Adresse e-mail</label>
+   <input type="email" id="email" autocomplete="username" required>
+   <label for="mdp">Mot de passe</label>
+   <input type="password" id="mdp" autocomplete="current-password" required>
+   <div class="actions"><button class="btn" type="submit" id="bLogin">Se connecter</button></div>
+   <p class="msg err" id="mLogin" hidden></p>
+  </form>
+ </section>
+
+ <!-- Espace propriétaire -->
+ <div id="app" hidden>
+
+  <section class="carte" id="carteForm">
+   <h2 id="titreForm">Ajouter un produit</h2>
+   <form id="fProd">
+    <label for="nom">Nom du produit *</label>
+    <input type="text" id="nom" maxlength="80" required>
+
+    <div class="ligne">
+     <div>
+      <label for="cat">Catégorie <span class="aide">(ex. Parfums, Soins)</span></label>
+      <input type="text" id="cat" maxlength="40" list="listeCats" autocomplete="off">
+      <datalist id="listeCats"></datalist>
+     </div>
+     <div>
+      <label for="etq">Étiquette <span class="aide">(ex. Nouveau, Promo)</span></label>
+      <input type="text" id="etq" maxlength="20">
+     </div>
+    </div>
+
+    <label for="desc">Description</label>
+    <textarea id="desc" maxlength="400"></textarea>
+
+    <label for="photo">Photo</label>
+    <div class="photo-zone">
+     <div class="apercu" id="apercu">Pas de photo</div>
+     <div>
+      <input type="file" id="photo" accept="image/*">
+      <p class="aide" style="margin-top:6px">La photo est réduite automatiquement pour que le site reste rapide.</p>
+      <button class="btn blanc petit" type="button" id="bRetirePhoto" hidden style="margin-top:8px">Retirer la photo</button>
+     </div>
+    </div>
+
+    <label class="check"><input type="checkbox" id="visible" checked> Afficher ce produit sur le site</label>
+
+    <div class="actions">
+     <button class="btn" type="submit" id="bSave">Enregistrer</button>
+     <button class="btn blanc" type="button" id="bAnnule" hidden>Annuler la modification</button>
+    </div>
+    <p class="msg" id="mForm" hidden></p>
+   </form>
+  </section>
+
+  <section>
+   <div class="liste-tete">
+    <h2>Mes produits</h2>
+    <span class="compte" id="compte"></span>
+   </div>
+   <p class="vide" id="vide" hidden>Aucun produit pour l'instant. Ajoutez le premier avec le formulaire ci-dessus.</p>
+   <div id="liste"></div>
+  </section>
+ </div>
+</main>
+
+<script src="config.js"></script>
+<script type="module">
+const cfg = window.FIREBASE_CONFIG;
+const $ = id => document.getElementById(id);
+const MAX_PRODUITS = 100;          /* nombre maximum de produits */
+const COTE_PHOTO = 560;            /* taille max. de la photo (pixels) */
+const CLE_CACHE = "nb_catalogue_v1";
+const V = "10.12.2";
+
+function montrer(el, texte, erreur){
+  el.hidden = false; el.textContent = texte;
+  el.classList.toggle("err", !!erreur);
+}
+
+if (!cfg || !cfg.apiKey) {
+  $("setup").hidden = false;
+} else {
+  demarrer().catch(function(e){
+    console.error(e);
+    $("login").hidden = false;
+    montrer($("mLogin"), "Impossible de joindre Firebase. Vérifiez la connexion Internet puis rechargez la page.", true);
+  });
+}
+
+async function demarrer(){
+  const m = await Promise.all([
+    import("https://www.gstatic.com/firebasejs/" + V + "/firebase-app.js"),
+    import("https://www.gstatic.com/firebasejs/" + V + "/firebase-auth.js"),
+    import("https://www.gstatic.com/firebasejs/" + V + "/firebase-firestore.js")
+  ]);
+  const { initializeApp } = m[0];
+  const { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } = m[1];
+  const { getFirestore, collection, getDocs, addDoc, setDoc, updateDoc, deleteDoc, doc } = m[2];
+
+  const app = initializeApp(cfg);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const col = collection(db, "produits");
+
+  let produits = [];     /* liste chargée */
+  let editId = null;     /* produit en cours de modification */
+  let imgData = "";      /* photo courante (data URL) */
+
+  /* ---------- Connexion ---------- */
+  $("fLogin").addEventListener("submit", async function(e){
+    e.preventDefault();
+    $("mLogin").hidden = true; $("bLogin").disabled = true;
+    try {
+      await signInWithEmailAndPassword(auth, $("email").value.trim(), $("mdp").value);
+    } catch (err) {
+      var c = err && err.code || "";
+      var t = "Connexion impossible. Réessayez.";
+      if (c.indexOf("invalid-credential") >= 0 || c.indexOf("wrong-password") >= 0 || c.indexOf("user-not-found") >= 0 || c.indexOf("invalid-email") >= 0) t = "E-mail ou mot de passe incorrect.";
+      else if (c.indexOf("too-many-requests") >= 0) t = "Trop d'essais. Patientez quelques minutes puis réessayez.";
+      else if (c.indexOf("network") >= 0) t = "Pas de connexion Internet.";
+      montrer($("mLogin"), t, true);
+    }
+    $("bLogin").disabled = false;
+  });
+
+  $("deco").addEventListener("click", function(){ signOut(auth); });
+
+  onAuthStateChanged(auth, function(user){
+    $("login").hidden = !!user;
+    $("app").hidden = !user;
+    $("deco").hidden = !user;
+    if (user) { $("mdp").value = ""; charger(); }
+  });
+
+  /* ---------- Lecture ---------- */
+  async function charger(){
+    try {
+      const snap = await getDocs(col);
+      produits = snap.docs.map(function(d){ var o = d.data(); o.id = d.id; return o; });
+      produits.sort(function(a, b){ return (b.ordre || 0) - (a.ordre || 0); });
+      dessinerListe();
+    } catch (err) {
+      console.error(err);
+      montrer($("mForm"), "Lecture impossible. Vous n'avez peut-être pas le droit d'accéder aux produits (vérifiez les règles Firestore et l'e-mail du compte).", true);
+    }
+  }
+
+  function dessinerListe(){
+    var liste = $("liste"); liste.textContent = "";
+    $("vide").hidden = produits.length > 0;
+    $("compte").textContent = produits.length + " / " + MAX_PRODUITS + " produits";
+
+    /* suggestions de catégories */
+    var dl = $("listeCats"); dl.textContent = "";
+    var vues = [];
+    produits.forEach(function(p){
+      var c = (p.cat || "").trim();
+      if (c && vues.indexOf(c) < 0) { vues.push(c); var o = document.createElement("option"); o.value = c; dl.appendChild(o); }
+    });
+
+    produits.forEach(function(p){
+      var r = document.createElement("div"); r.className = "rang" + (p.visible === false ? " masque" : "");
+
+      var mini = document.createElement("div"); mini.className = "mini";
+      if (p.img) { var im = document.createElement("img"); im.src = p.img; im.alt = ""; mini.appendChild(im); }
+      else mini.textContent = "Pas de photo";
+      r.appendChild(mini);
+
+      var info = document.createElement("div"); info.className = "info";
+      var b = document.createElement("b"); b.textContent = p.nom || "(sans nom)";
+      if (p.etq) { var bd = document.createElement("span"); bd.className = "badge"; bd.textContent = p.etq; b.appendChild(bd); }
+      info.appendChild(b);
+      var s = document.createElement("span");
+      s.textContent = (p.cat ? p.cat : "Sans catégorie") + (p.visible === false ? " · masqué sur le site" : "");
+      info.appendChild(s);
+      r.appendChild(info);
+
+      var btns = document.createElement("div"); btns.className = "btns";
+      btns.appendChild(bouton("Modifier", "blanc", function(){ modifier(p); }));
+      btns.appendChild(bouton(p.visible === false ? "Afficher" : "Masquer", "blanc", function(){ basculer(p); }));
+      btns.appendChild(bouton("Supprimer", "rouge", function(){ supprimer(p); }));
+      r.appendChild(btns);
+      liste.appendChild(r);
+    });
+  }
+
+  function bouton(texte, style, fn){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "btn petit " + style; b.textContent = texte;
+    b.addEventListener("click", fn);
+    return b;
+  }
+
+  /* ---------- Photo ---------- */
+  function majApercu(){
+    var ap = $("apercu"); ap.textContent = "";
+    if (imgData) {
+      var im = document.createElement("img"); im.src = imgData; im.alt = "Aperçu"; ap.appendChild(im);
+      $("bRetirePhoto").hidden = false;
+    } else {
+      ap.textContent = "Pas de photo";
+      $("bRetirePhoto").hidden = true;
+    }
+  }
+
+  function comprimer(file){
+    return new Promise(function(ok, ko){
+      var fr = new FileReader();
+      fr.onerror = function(){ ko(new Error("lecture")); };
+      fr.onload = function(){
+        var im = new Image();
+        im.onerror = function(){ ko(new Error("image")); };
+        im.onload = function(){
+          var k = Math.min(1, COTE_PHOTO / Math.max(im.width, im.height));
+          var w = Math.round(im.width * k), h = Math.round(im.height * k);
+          var c = document.createElement("canvas"); c.width = w; c.height = h;
+          var x = c.getContext("2d");
+          x.fillStyle = "#fff"; x.fillRect(0, 0, w, h);
+          x.drawImage(im, 0, 0, w, h);
+          ok(c.toDataURL("image/jpeg", 0.72));
+        };
+        im.src = fr.result;
+      };
+      fr.readAsDataURL(file);
+    });
+  }
+
+  $("photo").addEventListener("change", async function(){
+    var f = this.files && this.files[0];
+    if (!f) return;
+    try { imgData = await comprimer(f); majApercu(); $("mForm").hidden = true; }
+    catch (e) { montrer($("mForm"), "Cette photo n'a pas pu être lue. Essayez un autre fichier (JPG ou PNG).", true); }
+  });
+  $("bRetirePhoto").addEventListener("click", function(){ imgData = ""; $("photo").value = ""; majApercu(); });
+
+  /* ---------- Formulaire ---------- */
+  function vider(){
+    editId = null; imgData = "";
+    $("fProd").reset(); $("visible").checked = true; $("photo").value = "";
+    $("titreForm").textContent = "Ajouter un produit";
+    $("bSave").textContent = "Enregistrer";
+    $("bAnnule").hidden = true;
+    majApercu();
+  }
+
+  function modifier(p){
+    editId = p.id; imgData = p.img || "";
+    $("nom").value = p.nom || ""; $("cat").value = p.cat || ""; $("etq").value = p.etq || "";
+    $("desc").value = p.desc || ""; $("visible").checked = p.visible !== false;
+    $("photo").value = "";
+    $("titreForm").textContent = "Modifier le produit";
+    $("bSave").textContent = "Enregistrer les changements";
+    $("bAnnule").hidden = false; $("mForm").hidden = true;
+    majApercu();
+    $("carteForm").scrollIntoView({ behavior: "smooth", block: "start" });
+    $("nom").focus();
+  }
+
+  $("bAnnule").addEventListener("click", function(){ vider(); $("mForm").hidden = true; });
+
+  $("fProd").addEventListener("submit", async function(e){
+    e.preventDefault();
+    var nom = $("nom").value.trim();
+    if (!nom) { montrer($("mForm"), "Le nom du produit est obligatoire.", true); return; }
+    if (!editId && produits.length >= MAX_PRODUITS) {
+      montrer($("mForm"), "Limite de " + MAX_PRODUITS + " produits atteinte. Supprimez un produit pour en ajouter un autre.", true); return;
+    }
+    var existant = editId ? produits.find(function(p){ return p.id === editId; }) : null;
+    var data = {
+      nom: nom,
+      cat: $("cat").value.trim(),
+      etq: $("etq").value.trim(),
+      desc: $("desc").value.trim(),
+      img: imgData || "",
+      visible: $("visible").checked,
+      ordre: existant && existant.ordre ? existant.ordre : Date.now()
+    };
+    $("bSave").disabled = true;
+    try {
+      if (editId) await setDoc(doc(db, "produits", editId), data);
+      else await addDoc(col, data);
+      try { localStorage.removeItem(CLE_CACHE); } catch (x) {}
+      var msg = editId ? "Produit modifié." : "Produit ajouté.";
+      vider();
+      await charger();
+      montrer($("mForm"), msg + " Les clients le verront dans quelques minutes.", false);
+    } catch (err) {
+      console.error(err);
+      montrer($("mForm"), "Enregistrement impossible. " + (err && err.code === "permission-denied" ? "Ce compte n'a pas le droit d'écrire (vérifiez les règles Firestore)." : "Vérifiez la connexion Internet et réessayez."), true);
+    }
+    $("bSave").disabled = false;
+  });
+
+  /* ---------- Masquer / supprimer ---------- */
+  async function basculer(p){
+    try {
+      await updateDoc(doc(db, "produits", p.id), { visible: p.visible === false });
+      try { localStorage.removeItem(CLE_CACHE); } catch (x) {}
+      await charger();
+    } catch (err) { console.error(err); montrer($("mForm"), "Action impossible. Réessayez.", true); }
+  }
+
+  async function supprimer(p){
+    if (!confirm("Supprimer définitivement « " + (p.nom || "ce produit") + " » ?")) return;
+    try {
+      await deleteDoc(doc(db, "produits", p.id));
+      try { localStorage.removeItem(CLE_CACHE); } catch (x) {}
+      if (editId === p.id) vider();
+      await charger();
+      montrer($("mForm"), "Produit supprimé.", false);
+    } catch (err) { console.error(err); montrer($("mForm"), "Suppression impossible. Réessayez.", true); }
+  }
+}
+</script>
+</body>
+</html>
