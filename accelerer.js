@@ -62,6 +62,34 @@
   var compteur = 0;
   var origines = {};
 
+  /* Allègement automatique des photos : chaque image passe par le service
+     gratuit wsrv.nl, qui la renvoie réduite et en WebP (souvent 5 à 10 fois
+     plus légère). Si le service ne répond pas, la photo d'origine est affichée. */
+  var ALLEGER_IMAGES = true;   // mettre false pour désactiver
+  var LARGEUR_MAX = 720;       // largeur maximale en pixels
+  var QUALITE = 75;            // qualité (1-100)
+
+  function alleger(img) {
+    if (!ALLEGER_IMAGES) return;
+    if (location.protocol === 'file:' || /^(localhost|127\.)/.test(location.hostname)) return;
+    var src = img.getAttribute('src');
+    if (!src || /^(data|blob):/i.test(src)) return;
+    var abs;
+    try { abs = new URL(src, location.href); } catch (e) { return; }
+    if (/(^|\.)wsrv\.nl$/.test(abs.hostname)) return;
+    if (/\.(svg|gif)(\?|$)/i.test(abs.pathname)) return;
+    var original = abs.href;
+    img.setAttribute('data-nb-original', original);
+    img.removeAttribute('srcset');
+    img.addEventListener('error', function () {
+      if (img.getAttribute('data-nb-repli')) return;
+      img.setAttribute('data-nb-repli', '1');
+      img.src = original;
+    });
+    img.src = 'https://wsrv.nl/?url=' + encodeURIComponent(original) +
+      '&w=' + LARGEUR_MAX + '&q=' + QUALITE + '&output=webp&we';
+  }
+
   function optimiser(img) {
     if (img.__nb) return;
     img.__nb = true;
@@ -73,6 +101,7 @@
     } else {
       img.loading = 'lazy';
     }
+    alleger(img);
     var fini = function () { img.setAttribute('data-nb-ok', '1'); verifier(); };
     if (img.complete && img.naturalWidth > 0) fini();
     else {
@@ -159,4 +188,3 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', demarrer);
   else demarrer();
 })();
-                     
